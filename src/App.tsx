@@ -1,12 +1,12 @@
 import {StatusBar} from "react-native";
 
-import Dashboard from "./pages/Dashboard";
+import Deliveries from "./pages/Deliveries";
 
 export default function App(){
   return (
     <> 
-      <StatusBar barStyle="light-content" backgroundColor="#4d148c"/>
-      <Dashboard/>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFF"/>
+      <Deliveries/>
     </>
   );
 }

@@ -25,6 +25,13 @@ export default function Dashboard(){
                         <Text  style={{fontSize: 15, color: "#FFF"}}>Entregas pendentes</Text>
                     </StatusBoxContainer>
                 </StatusBox>
+                <StatusBox backgroundColor="#fa9657">
+                    <Text style={{fontSize: 45, fontWeight: "bold", color: "#FFF"}}>22</Text>
+                    <StatusBoxContainer>
+                        <Icon name="arrow-circle-right" size={50} color="#FFF"/>
+                        <Text  style={{fontSize: 15, color: "#FFF"}}>Entregas em trânsito</Text>
+                    </StatusBoxContainer>
+                </StatusBox>
                 <StatusBox  backgroundColor="#87d6b7">
                     <Text style={{fontSize: 45, fontWeight: "bold", color: "#FFF"}}>56</Text>
                     <StatusBoxContainer>

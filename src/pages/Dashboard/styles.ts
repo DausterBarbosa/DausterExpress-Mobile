@@ -48,7 +48,7 @@ export const StatusBox = styled.View<{backgroundColor: string}>`
     flex-direction: row;
     align-items: center;
     padding: 20px;
-    margin-top: 15px;
+    margin-top: 10px;
 `;
 
 export const StatusBoxContainer = styled.View`
