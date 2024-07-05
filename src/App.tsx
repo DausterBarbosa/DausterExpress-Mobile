@@ -1,12 +1,12 @@
 import {StatusBar} from "react-native";
 
-import Deliveries from "./pages/Deliveries";
+import DeliveriesInfo from "./pages/DeliveriesInfo";
 
 export default function App(){
   return (
     <> 
       <StatusBar barStyle="dark-content" backgroundColor="#FFF"/>
-      <Deliveries/>
+      <DeliveriesInfo/>
     </>
   );
 }
