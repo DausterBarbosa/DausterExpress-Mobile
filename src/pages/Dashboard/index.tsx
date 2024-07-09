@@ -1,17 +1,15 @@
 import {Text} from "react-native";
 
-import {StatusContainer, StatusBoxContainer, StatusBox, DashboardPage, AppBarContainer, Logo, LogoText, WelcomeContainer, WelcomeLabelContainer} from "./styles";
+import FocusStatusBar from "../../components/FocusStatusBar";
+
+import {StatusContainer, StatusBoxContainer, StatusBox, DashboardPage, WelcomeContainer, WelcomeLabelContainer} from "./styles";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function Dashboard(){
     return (
         <DashboardPage>
-            <AppBarContainer>
-                <Icon name="menu" size={35} color="#FFF"/>
-                <Logo><LogoText color="#FFF">Dauster</LogoText><LogoText color="#ff6200">Express</LogoText></Logo>
-                <Icon name="notifications" size={35} color="#FFF"/>
-            </AppBarContainer>
+            <FocusStatusBar barStyle="light-content" backgroundColor="#4d148c"/>
             <WelcomeContainer>
                 <WelcomeLabelContainer fontSize="25px" fontWeight="bold">Olá, Dauster Barbosa</WelcomeLabelContainer>
                 <WelcomeLabelContainer fontSize="17px" fontWeight="300">Bem vindo ao DausterExpress logística</WelcomeLabelContainer>

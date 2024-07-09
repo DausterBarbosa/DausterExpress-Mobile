@@ -5,23 +5,6 @@ export const DeliveriesPage = styled.View`
     background-color: #FFF;
 `;
 
-export const AppBarContainer = styled.View`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px;
-    background-color: #FFF;
-`;
-
-export const Logo = styled.Text`
-    font-size: 25px;
-    font-weight: 900;
-`;
-
-export const LogoText = styled.Text<{color: string}>`
-    color: ${props => props.color}
-`;
-
 export const ToolsBarContainer = styled.View`
     padding: 10px;
     background: #FFF;

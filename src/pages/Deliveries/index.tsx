@@ -1,7 +1,10 @@
 import {useState} from "react";
+
 import {Text, View} from "react-native";
 
-import {ItemContainer, ItemInfoContainer,  ListItemContainer, ItemContainerStatus, ListContainerButton, ListLabelContainer, ListContainerLabel, ListContainer, AppBarContainer, DeliveriesPage, Logo, LogoText, ToolsBarContainer, SearchBarContainer, SearchBarInput, SearchBarButton} from "./styles";
+import FocusStatusBar from "../../components/FocusStatusBar";
+
+import {ItemContainer, ItemInfoContainer,  ListItemContainer, ItemContainerStatus, ListContainerButton, ListLabelContainer, ListContainerLabel, ListContainer, DeliveriesPage, ToolsBarContainer, SearchBarContainer, SearchBarInput, SearchBarButton} from "./styles";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -10,11 +13,7 @@ export default function Deliveries(){
 
     return (
         <DeliveriesPage>
-            <AppBarContainer>
-                <Icon name="menu" size={35} color="#4d148c"/>
-                <Logo><LogoText color="#4d148c">Dauster</LogoText><LogoText color="#ff6200">Express</LogoText></Logo>
-                <Icon name="notifications" size={35} color="#4d148c"/>
-            </AppBarContainer>
+            <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <ToolsBarContainer>
                 <Text style={{fontSize: 25, fontWeight: "bold", color: "#494E5D"}}>Suas entregas</Text>
                 <SearchBarContainer>

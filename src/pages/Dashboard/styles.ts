@@ -5,23 +5,6 @@ export const DashboardPage = styled.View`
     background-color: #FFF;
 `;
 
-export const AppBarContainer = styled.View`
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px;
-    background-color: #4d148c;
-`;
-
-export const Logo = styled.Text`
-    font-size: 25px;
-    font-weight: 900;
-`;
-
-export const LogoText = styled.Text<{color: string}>`
-    color: ${props => props.color}
-`;
-
 export const WelcomeContainer = styled.View`
     background-color: #4d148c;
     height: 110px;

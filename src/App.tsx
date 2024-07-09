@@ -1,12 +1,13 @@
-import {StatusBar} from "react-native";
+import "react-native-gesture-handler";
 
-import PhotoDelivery from "./pages/PhotoDelivery";
+import { NavigationContainer } from "@react-navigation/native";
+
+import DrawerNavigation from "./Routes/DrawerNavigation";
 
 export default function App(){
   return (
-    <> 
-      <StatusBar barStyle="dark-content" backgroundColor="#FFF"/>
-      <PhotoDelivery/>
-    </>
+    <NavigationContainer>
+      <DrawerNavigation/>
+    </NavigationContainer>
   );
 }
