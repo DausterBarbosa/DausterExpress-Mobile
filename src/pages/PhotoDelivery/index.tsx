@@ -8,6 +8,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import {ActionsButton, ActionsButtonContainer, PermissionFailedInfoButtonLabel, PermissionFailedInfoButton, PermissionFailedInfoLabel, PhotoDeliveryButton, PermissionFailedContainer, PermissionFailedInfoContainer} from "./styles";
 
+import FocusStatusBar from "../../components/FocusStatusBar";
+
 export default function PhotoDelivery(){
     const [photoTaken, setPhotoTaken] = useState<null | string>(null);
 
@@ -33,6 +35,7 @@ export default function PhotoDelivery(){
 
     if (!hasPermission) return (
         <PermissionFailedContainer>
+            <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <PermissionFailedInfoContainer>
                 <Icon name="no-photography" size={70} color="#4d148c"/>
                 <PermissionFailedInfoLabel>Conceda a permissão para o uso{"\n"}da câmera para prosseguir.</PermissionFailedInfoLabel>
@@ -45,6 +48,7 @@ export default function PhotoDelivery(){
 
     if (photoTaken !== null) return (
         <>
+            <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <Image style={{flex: 1}} source={{uri: "file://" + photoTaken}}/>
             <ActionsButtonContainer>
                 <ActionsButton onPress={handleDiscartPhoto} backgroundColor="red" marginRight="80px">
@@ -59,6 +63,7 @@ export default function PhotoDelivery(){
 
     return (
         <>
+            <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <Camera
                 style={{flex: 1}}
                 device={device}

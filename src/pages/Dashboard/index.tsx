@@ -24,7 +24,7 @@ export default function Dashboard(){
                     </StatusBoxContainer>
                 </StatusBox>
                 <StatusBox backgroundColor="#fa9657">
-                    <Text style={{fontSize: 45, fontWeight: "bold", color: "#FFF"}}>22</Text>
+                    <Text style={{fontSize: 45, fontWeight: "bold", color: "#FFF"}}>02</Text>
                     <StatusBoxContainer>
                         <Icon name="arrow-circle-right" size={50} color="#FFF"/>
                         <Text  style={{fontSize: 15, color: "#FFF"}}>Entregas em trânsito</Text>
@@ -44,7 +44,7 @@ export default function Dashboard(){
                         <Text style={{fontSize: 15, color: "#FFF"}}>Entregas com problemas</Text>
                     </StatusBoxContainer>
                 </StatusBox>
-                <StatusBox  backgroundColor="#e6a396">
+                <StatusBox  backgroundColor="#e6a396" marginBottom="35px">
                     <Text style={{fontSize: 45, fontWeight: "bold", color: "#FFF"}}>78</Text>
                     <StatusBoxContainer>
                         <Icon name="cancel" size={50} color="#FFF"/>

@@ -3,7 +3,8 @@ import {createDrawerNavigator} from "@react-navigation/drawer";
 import HeaderBar from "../components/HeaderBar";
 
 import Dashboard from "../pages/Dashboard";
-import Deliveries from "../pages/Deliveries";
+
+import StackNavigation from "./StackNavigation";
 
 const Drawer = createDrawerNavigator();
 
@@ -11,7 +12,7 @@ export default function DrawerNavigation(){
     return (
         <Drawer.Navigator>
             <Drawer.Screen
-                name="Dashboard"
+                name="Início"
                 component={Dashboard}
                 options={{
                     header: () => <HeaderBar
@@ -25,15 +26,9 @@ export default function DrawerNavigation(){
             />
             <Drawer.Screen
                 name="Entregas"
-                component={Deliveries}
+                component={StackNavigation}
                 options={{
-                    header: () => <HeaderBar
-                        colorMenuIcon="#4d148c"
-                        colorNotificationIcon="#4d148c"
-                        colorBackgroundHeader="#FFF"
-                        colorFirstName="#4d148c"
-                        colorSecondName="#ff6200"
-                    />
+                    headerShown: false,
                 }}
             />
         </Drawer.Navigator>

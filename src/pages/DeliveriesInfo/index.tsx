@@ -1,12 +1,19 @@
-import {Text, TouchableOpacity} from "react-native";
+import {Text} from "react-native";
+
+import {useNavigation} from "@react-navigation/native";
+
+import FocusStatusBar from "../../components/FocusStatusBar";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import {ButtonsContainer, ButtonContainer, ActionsContainer, DataInfoContainer, DataContainer, DeliveryProgressContainer, DeliveryProgressStatusContainer, DeliveriesInfoPage, DeliveriInfoContainer, DeliveriPageLabelContainer, DeliveriStatusContainer} from "./styles";
 
 export default function DeliveriesInfo(){
+    const navigation = useNavigation();
+
     return (
         <DeliveriesInfoPage>
+            <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <DeliveriInfoContainer>
                 <DeliveriPageLabelContainer>
                     <Icon name="local-shipping" size={35} color="#4d148c"/>
@@ -59,15 +66,15 @@ export default function DeliveriesInfo(){
                     <Text style={{fontSize: 20, fontWeight: "bold", color: "#4d148c", marginLeft: 10}}>Ações</Text>
                 </DeliveriPageLabelContainer>
                 <ButtonsContainer>
-                    <ButtonContainer>
+                    <ButtonContainer onPress={() => navigation.navigate("Informar problema")}>
                         <Icon name="cancel" size={35} color="#e74040"/>
                         <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>INFORMAR{`\n`}PROBLEMA</Text>
                     </ButtonContainer>
-                    <ButtonContainer>
+                    <ButtonContainer onPress={() => navigation.navigate("Lista de problemas")}>
                         <Icon name="error" size={35} color="#e7ba40"/>
                         <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>LISTAR{`\n`}PROBLEMAS</Text>
                     </ButtonContainer>
-                    <ButtonContainer>
+                    <ButtonContainer onPress={() => navigation.navigate("Tirar foto")}>
                         <Icon name="check-circle" size={35} color="green"/>
                         <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>REALIZAR{`\n`}ENTREGA</Text>
                     </ButtonContainer>

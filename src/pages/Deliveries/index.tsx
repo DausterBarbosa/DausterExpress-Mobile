@@ -2,6 +2,8 @@ import {useState} from "react";
 
 import {Text, View} from "react-native";
 
+import {useNavigation} from "@react-navigation/native";
+
 import FocusStatusBar from "../../components/FocusStatusBar";
 
 import {ItemContainer, ItemInfoContainer,  ListItemContainer, ItemContainerStatus, ListContainerButton, ListLabelContainer, ListContainerLabel, ListContainer, DeliveriesPage, ToolsBarContainer, SearchBarContainer, SearchBarInput, SearchBarButton} from "./styles";
@@ -9,6 +11,8 @@ import {ItemContainer, ItemInfoContainer,  ListItemContainer, ItemContainerStatu
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function Deliveries(){
+    const navigation = useNavigation();
+
     const [openList, setOpenList] = useState(false);
 
     return (
@@ -60,7 +64,7 @@ export default function Deliveries(){
                 </SearchBarContainer>
             </ToolsBarContainer>
             <ListItemContainer>
-                <ItemContainer>
+                <ItemContainer onPress={() => navigation.navigate("Detalhes")}>
                     <ItemContainerStatus backgroundColor="#b491e4">
                         <Icon name="pending" size={40} color="#FFF"/>
                     </ItemContainerStatus>

@@ -25,13 +25,17 @@ export const StatusContainer = styled.ScrollView`
     padding: 15px;
 `;
 
-export const StatusBox = styled.View<{backgroundColor: string}>`
+export const StatusBox = styled.View<{
+    backgroundColor: string;
+    marginBottom?: string;
+}>`
     background-color: ${props => props.backgroundColor};
     border-radius: 30px;
     flex-direction: row;
     align-items: center;
     padding: 20px;
     margin-top: 10px;
+    margin-bottom: ${props => props.marginBottom};
 `;
 
 export const StatusBoxContainer = styled.View`
