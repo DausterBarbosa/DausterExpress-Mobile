@@ -1,6 +1,7 @@
 import {createDrawerNavigator} from "@react-navigation/drawer";
 
 import HeaderBar from "../components/HeaderBar";
+import SideBar from "../components/SideBar";
 
 import Dashboard from "../pages/Dashboard";
 
@@ -10,7 +11,9 @@ const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigation(){
     return (
-        <Drawer.Navigator>
+        <Drawer.Navigator
+            drawerContent={() => <SideBar/>}
+        >
             <Drawer.Screen
                 name="Início"
                 component={Dashboard}
