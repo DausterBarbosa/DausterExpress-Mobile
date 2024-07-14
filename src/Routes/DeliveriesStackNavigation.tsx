@@ -10,7 +10,7 @@ import PhotoDelivery from "../pages/PhotoDelivery";
 
 const Stack = createStackNavigator();
 
-export default function StackNavigation(){
+export default function DeliveriesStackNavigation(){
     return (
         <Stack.Navigator>
             <Stack.Screen

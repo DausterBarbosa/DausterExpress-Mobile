@@ -4,8 +4,10 @@ import HeaderBar from "../components/HeaderBar";
 import SideBar from "../components/SideBar";
 
 import Dashboard from "../pages/Dashboard";
+import ChangePassword from "../pages/ChangePassword";
 
-import StackNavigation from "./StackNavigation";
+import DeliveriesStackNavigation from "./DeliveriesStackNavigation";
+import SettingsStackNavigation from "./SettingsStackNavigation";
 
 const Drawer = createDrawerNavigator();
 
@@ -29,7 +31,14 @@ export default function DrawerNavigation(){
             />
             <Drawer.Screen
                 name="Entregas"
-                component={StackNavigation}
+                component={DeliveriesStackNavigation}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Drawer.Screen
+                name="Configurações"
+                component={SettingsStackNavigation}
                 options={{
                     headerShown: false,
                 }}

@@ -31,9 +31,9 @@ export default function SideBar(){
                     <Icon name="local-shipping" size={35} color={currentScreen === "Entregas" ? "#ff6200" : "#333"}/>
                     <ListContainerItemLabel color={currentScreen === "Entregas" ? "#ff6200" : "#333"}>Entregas</ListContainerItemLabel>
                 </ListContainerItem>
-                <ListContainerItem>
-                    <Icon name="person" size={35} color="#333"/>
-                    <ListContainerItemLabel color="#333">Meu perfil</ListContainerItemLabel>
+                <ListContainerItem backgroundColor={currentScreen === "Configurações" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Configurações")}>
+                    <Icon name="settings" size={35} color={currentScreen === "Configurações" ? "#ff6200" : "#333"}/>
+                    <ListContainerItemLabel color={currentScreen === "Configurações" ? "#ff6200" : "#333"}>Configurações</ListContainerItemLabel>
                 </ListContainerItem>
             </ListContainer>
             <ExitContainer>
