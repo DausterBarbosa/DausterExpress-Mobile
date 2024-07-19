@@ -32,6 +32,7 @@ export const LoginButton = styled.TouchableOpacity`
     justify-content: center;
     margin-top: 20px;
     width: 100%;
+    height: 55px;
 `;
 
 export const LoginButtonLabel = styled.Text`

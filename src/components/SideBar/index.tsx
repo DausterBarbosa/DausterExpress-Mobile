@@ -1,4 +1,6 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -6,7 +8,11 @@ import {useNavigation} from "@react-navigation/native";
 
 import {ExitContainerLabel, ExitContainer, ListContainerItemLabel, ListContainerItem, SideBarContainer, PerfilContainer, PerfilImage, PerfilName, ListContainer} from "./styles";
 
+import AuthContext from "../../contexts/auth";
+
 export default function SideBar(){
+    const {signOut} = useContext(AuthContext);
+
     const [currentScreen, setCurrentScreen] = useState("Início");
 
     const navigation = useNavigation();
@@ -14,6 +20,10 @@ export default function SideBar(){
     function handleSideBarNavigation(screen:string){
         navigation.navigate(screen);
         setCurrentScreen(screen);
+    }
+
+    async function handleSignOut(){
+        signOut();
     }
 
     return (
@@ -36,7 +46,7 @@ export default function SideBar(){
                     <ListContainerItemLabel color={currentScreen === "Configurações" ? "#ff6200" : "#333"}>Configurações</ListContainerItemLabel>
                 </ListContainerItem>
             </ListContainer>
-            <ExitContainer>
+            <ExitContainer onPress={handleSignOut}>
                 <Icon name="exit-to-app" size={35} color="#f14927"/>
                 <ExitContainerLabel>Sair do aplicativo</ExitContainerLabel>
             </ExitContainer>
