@@ -34,5 +34,3 @@ export default function Login(){
         </LoginPage>
     );
 }
-
-// onPress={() => navigation.navigate("DrawerNavigation")}

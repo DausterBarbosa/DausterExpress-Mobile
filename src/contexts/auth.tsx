@@ -7,9 +7,21 @@ import {useGetAuthorization} from "../controllers/LoginController";
 
 import Api from "../services/api";
 
+interface User{
+    nome: string;
+    sobrenome: string;
+    cidade: string;
+    cep: string;
+    email: string;
+    endereco: string;
+    estado: string;
+    numero: string;
+    telefone: string;
+}
+
 interface AuthContextData {
     signed: boolean;
-    user: object | null;
+    user: User | null;
     loading: boolean;
     isPending: boolean;
     signIn(email:string, password:string):Promise<void>;
@@ -27,20 +39,20 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({ children }) => {
 
     const {mutateAsync, isPending} = useGetAuthorization();
 
-    const [user, setUser] = useState<object | null>(null);
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         async function loadStorageData() {
             const storagedUser = await AsyncStorage.getItem("@DausterExpressAuth:user");
             const storagedToken = await AsyncStorage.getItem("@DausterExpressAuth:token");
     
+            Api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
+
             if (storagedUser && storagedToken){
                 setUser(JSON.parse(storagedUser));
             }
 
             setLoading(false);
-
-            Api.defaults.headers.Authorization = `Baerer ${storagedToken}`;
         }
     
         loadStorageData();
@@ -50,12 +62,12 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({ children }) => {
         try {
             const data = await mutateAsync({email, password});
 
-            setUser(data.data.data.user);
-
-            Api.defaults.headers.Authorization = `Baerer ${data.data.data.token}`;
+            Api.defaults.headers.Authorization = `Bearer ${data.data.data.token}`;
 
             await AsyncStorage.setItem("@DausterExpressAuth:user", JSON.stringify(data.data.data.user));
             await AsyncStorage.setItem("@DausterExpressAuth:token", data.data.data.token);
+
+            setUser(data.data.data.user);
         } catch (error) {
             Alert.alert("Atenção", "Credenciais inválidas");
         }
