@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-import {Text, View} from "react-native";
+import {Text, View, ActivityIndicator} from "react-native";
 
 import {useNavigation} from "@react-navigation/native";
 
@@ -10,8 +10,12 @@ import {ItemContainer, ItemInfoContainer,  ListItemContainer, ItemContainerStatu
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import {useGetDeliveries} from "../../controllers/DeliveriesController";
+
 export default function Deliveries(){
     const navigation = useNavigation();
+
+    const {data, isLoading, isSuccess} = useGetDeliveries();
 
     const [openList, setOpenList] = useState(false);
 
@@ -63,58 +67,98 @@ export default function Deliveries(){
                     </View>
                 </SearchBarContainer>
             </ToolsBarContainer>
-            <ListItemContainer>
-                <ItemContainer onPress={() => navigation.navigate("Detalhes")}>
-                    <ItemContainerStatus backgroundColor="#b491e4">
-                        <Icon name="pending" size={40} color="#FFF"/>
-                    </ItemContainerStatus>
-                    <ItemInfoContainer>
-                        <Text style={{fontWeight: "bold", fontSize: 17}}>Embrapa LTDA</Text>
-                        <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
-                        <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
-                    </ItemInfoContainer>
-                </ItemContainer>
-                <ItemContainer>
-                    <ItemContainerStatus backgroundColor="#fa9657">
-                        <Icon name="arrow-circle-right" size={40} color="#FFF"/>
-                    </ItemContainerStatus>
-                    <ItemInfoContainer>
-                        <Text style={{fontWeight: "bold", fontSize: 17}}>Embraer</Text>
-                        <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
-                        <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
-                    </ItemInfoContainer>
-                </ItemContainer>
-                <ItemContainer>
-                    <ItemContainerStatus backgroundColor="#87d6b7">
-                        <Icon name="check-circle" size={40} color="#FFF"/>
-                    </ItemContainerStatus>
-                    <ItemInfoContainer>
-                        <Text style={{fontWeight: "bold", fontSize: 17}}>Vale do Rio Doce</Text>
-                        <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
-                        <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
-                    </ItemInfoContainer>
-                </ItemContainer>
-                <ItemContainer>
-                    <ItemContainerStatus backgroundColor="#dec560">
-                        <Icon name="error" size={40} color="#FFF"/>
-                    </ItemContainerStatus>
-                    <ItemInfoContainer>
-                        <Text style={{fontWeight: "bold", fontSize: 17}}>Petrobrás</Text>
-                        <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
-                        <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
-                    </ItemInfoContainer>
-                </ItemContainer>
-                <ItemContainer>
-                    <ItemContainerStatus backgroundColor="#e6a396">
-                        <Icon name="cancel" size={40} color="#FFF"/>
-                    </ItemContainerStatus>
-                    <ItemInfoContainer>
-                        <Text style={{fontWeight: "bold", fontSize: 17}}>Lockheed Martin</Text>
-                        <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
-                        <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
-                    </ItemInfoContainer>
-                </ItemContainer>
-            </ListItemContainer>
+            {isLoading ? (
+                <View style={{flex:1, alignItems: "center", justifyContent: "center"}}>
+                    <ActivityIndicator size="large" color="#ff6200"/>
+                </View>
+            ) : (
+                <ListItemContainer>
+                    {data.data.map((item:any) => (
+                        <ItemContainer key={item.id}>
+                            {item.status === "pendente" && (
+                                <ItemContainerStatus backgroundColor="#b491e4">
+                                    <Icon name="pending" size={40} color="#FFF"/>
+                                </ItemContainerStatus>
+                            )}
+                            {item.status === "retirado" && (
+                                <ItemContainerStatus backgroundColor="#fa9657">
+                                    <Icon name="arrow-circle-right" size={40} color="#FFF"/>
+                                </ItemContainerStatus>
+                            )}
+                             {item.status === "entregue" && (
+                                <ItemContainerStatus backgroundColor="#87d6b7">
+                                    <Icon name="check-circle" size={40} color="#FFF"/>
+                                </ItemContainerStatus>
+                            )}
+                            {item.status === "problema" && (
+                                <ItemContainerStatus backgroundColor="#dec560">
+                                    <Icon name="error" size={40} color="#FFF"/>
+                                </ItemContainerStatus>
+                            )}
+                            {item.status === "cancelado" && (
+                                <ItemContainerStatus backgroundColor="#e6a396">
+                                    <Icon name="cancel" size={40} color="#FFF"/>
+                                </ItemContainerStatus>
+                            )}
+                            <ItemInfoContainer>
+                                <Text style={{fontWeight: "bold", fontSize: 17}}>{item.destinatario.nome}</Text>
+                                <Text style={{fontSize: 15}}>{item.destinatario.cnpj}</Text>
+                                <Text style={{fontSize: 15}}>{item.destinatario.cidade}</Text>
+                            </ItemInfoContainer>
+                        </ItemContainer>
+                    ))}
+                </ListItemContainer>
+            )}
         </DeliveriesPage>
     );
 }
+{/* <ItemContainer onPress={() => navigation.navigate("Detalhes")}>
+                        <ItemContainerStatus backgroundColor="#b491e4">
+                            <Icon name="pending" size={40} color="#FFF"/>
+                        </ItemContainerStatus>
+                        <ItemInfoContainer>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Embrapa LTDA</Text>
+                            <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
+                            <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
+                        </ItemInfoContainer>
+                    </ItemContainer>
+                    <ItemContainer>
+                        <ItemContainerStatus backgroundColor="#fa9657">
+                            <Icon name="arrow-circle-right" size={40} color="#FFF"/>
+                        </ItemContainerStatus>
+                        <ItemInfoContainer>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Embraer</Text>
+                            <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
+                            <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
+                        </ItemInfoContainer>
+                    </ItemContainer>
+                    <ItemContainer>
+                        <ItemContainerStatus backgroundColor="#87d6b7">
+                            <Icon name="check-circle" size={40} color="#FFF"/>
+                        </ItemContainerStatus>
+                        <ItemInfoContainer>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Vale do Rio Doce</Text>
+                            <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
+                            <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
+                        </ItemInfoContainer>
+                    </ItemContainer>
+                    <ItemContainer>
+                        <ItemContainerStatus backgroundColor="#dec560">
+                            <Icon name="error" size={40} color="#FFF"/>
+                        </ItemContainerStatus>
+                        <ItemInfoContainer>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Petrobrás</Text>
+                            <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
+                            <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
+                        </ItemInfoContainer>
+                    </ItemContainer>
+                    <ItemContainer>
+                        <ItemContainerStatus backgroundColor="#e6a396">
+                            <Icon name="cancel" size={40} color="#FFF"/>
+                        </ItemContainerStatus>
+                        <ItemInfoContainer>
+                            <Text style={{fontWeight: "bold", fontSize: 17}}>Lockheed Martin</Text>
+                            <Text style={{fontSize: 15}}>12.345.678/0001-00</Text>
+                            <Text style={{fontSize: 15}}>Viçosa do Ceará</Text>
+                        </ItemInfoContainer>
+                    </ItemContainer> */}
