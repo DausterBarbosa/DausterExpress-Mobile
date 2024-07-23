@@ -37,11 +37,13 @@ export const StatusContainer = styled.View`
     padding: 10px;
 `;
 
-export const StatusContainerTag = styled.Text`
+export const StatusContainerTag = styled.Text<{
+    backgroundColor: string;
+}>`
     background: red;
     font-weight: bold;
     color: #FFF;
-    background-color: #4d148c;
+    background-color: ${props => props.backgroundColor};
     font-size: 15px;
     border-radius: 100px;
     text-align: center;

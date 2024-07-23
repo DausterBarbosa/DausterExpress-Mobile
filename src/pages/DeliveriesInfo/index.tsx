@@ -1,6 +1,6 @@
 import {Text} from "react-native";
 
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 
 import FocusStatusBar from "../../components/FocusStatusBar";
 
@@ -11,21 +11,46 @@ import {StatusContainerItemLabels, StatusContainerItem, StatusContainerTag, Stat
 export default function DeliveriesInfo(){
     const navigation = useNavigation();
 
+    const route = useRoute();
+
+    function statusColor(status:string){
+        switch(status){
+            case "pendente":
+                return "#4d148c";
+            case "retirado":
+                return "#ff6200";
+            case "entregue":
+                return "green";
+            case "problema":
+                return "yellow";
+            case "cancelado":
+                return "red"
+        }
+    }
+
     return (
         <DeliveriesInfoPage>
             <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <DeliveriInfoContainer>
                 <Text style={{fontWeight: "bold", fontSize: 20, marginBottom: 5, color: "#333"}}>Destinatário</Text>
-                <Text style={{fontSize: 17}}>Petrobrás LTDA</Text>
+                <Text style={{fontSize: 17}}>{route.params.destinatario.nome}</Text>
                 <Text style={{fontWeight: "bold", fontSize: 20, marginTop: 10, marginBottom: 5, color: "#333"}}>Endereço da Entrega</Text>
-                <Text style={{fontSize: 17}}>Rua Lamartine Nogueira, 1700</Text>
-                <Text style={{fontSize: 17}}>Viçosa do Ceará, CE / 62300-000</Text>
-                <Text style={{fontSize: 17}}>Ao lado do colégio Gladys Beviláqua</Text>
+                <Text style={{fontSize: 17}}>{route.params.destinatario.endereco}, {route.params.destinatario.numero}</Text>
+                <Text style={{fontSize: 17}}>{route.params.destinatario.cidade}, {route.params.destinatario.estado} / {route.params.destinatario.cep}</Text>
+                <Text style={{fontSize: 17}}>{route.params.destinatario.complemento}</Text>
                 <Text style={{fontWeight: "bold", fontSize: 20, marginTop: 10, marginBottom: 5, color: "#333"}}>Produto</Text>
-                <Text style={{fontSize: 17}}>Lote de fuzis AR-15 automáticos</Text>
+                <Text style={{fontSize: 17}}>{route.params.encomenda}</Text>
             </DeliveriInfoContainer>
             <StatusContainer>
-                <StatusContainerTag>PENDENTE</StatusContainerTag>
+                <StatusContainerTag
+                    backgroundColor={statusColor(route.params.status)}
+                >
+                    {route.params.status === "pendente" && "PENDENTE"}
+                    {route.params.status === "retirado" && "EM TRÂNSITO"}
+                    {route.params.status === "entregue" && "ENTREGUE"}
+                    {route.params.status === "problema" && "PROBLEMA"}
+                    {route.params.status === "cancelado" && "CANCELADO"}
+                </StatusContainerTag>
                 <StatusContainerItem>
                     <Icon name="check-circle" size={35} color="green"/>
                     <StatusContainerItemLabels>
