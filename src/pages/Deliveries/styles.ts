@@ -13,6 +13,7 @@ export const ToolsBarContainer = styled.View`
 export const SearchBarContainer = styled.View`
     flex-direction: row;
     margin-top: 10px;
+    align-items: center;
 `;
 
 export const SearchBarInput = styled.TextInput`
@@ -20,7 +21,7 @@ export const SearchBarInput = styled.TextInput`
     background-color: #EEE;
     border-radius: 20px;
     font-size: 17px;
-    padding: 0 10px;
+    padding: 10px 15px;
 `;
 
 export const SearchBarButton = styled.TouchableOpacity`
@@ -52,6 +53,7 @@ export const ListContainerLabel = styled.Text`
 export const ListLabelContainer = styled.View`
     flex-direction: row;
     align-items: center;
+    padding: 5px;
 `;
 
 export const ListItemContainer = styled.View`

@@ -12,12 +12,53 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import {useGetDeliveries} from "../../controllers/DeliveriesController";
 
+import {Menu, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
+
 export default function Deliveries(){
     const navigation = useNavigation();
 
-    const {data, isLoading, isSuccess} = useGetDeliveries();
+    const [queryParams, setQueryParams] = useState({
+        page: 0,
+        status: "todos",
+        encomenda: "",
+    });
 
-    const [openList, setOpenList] = useState(false);
+    const [searchOrder, setSearchOrder] = useState("");
+
+    const {data, isLoading} = useGetDeliveries(queryParams);
+
+    function handleStatus(status:string){
+        setSearchOrder("");
+        if(status !== queryParams.status){
+            setQueryParams({
+                page: 0,
+                status,
+                encomenda: ""
+            });
+        }
+    }
+
+    function handleOrderSearchField(search:string){
+        setSearchOrder(search);
+
+        if(search === ""){
+            setQueryParams({
+                status: "todos",
+                page: 0,
+                encomenda: "",
+            });
+        }
+    }
+
+    function handleOrderSearch(){
+        if(searchOrder.trim() !== ""){
+            setQueryParams({
+                status: "todos",
+                page: 0,
+                encomenda: searchOrder,
+            });
+        }
+    }
 
     return (
         <DeliveriesPage>
@@ -25,51 +66,61 @@ export default function Deliveries(){
             <ToolsBarContainer>
                 <Text style={{fontSize: 25, fontWeight: "bold", color: "#494E5D"}}>Suas entregas</Text>
                 <SearchBarContainer>
-                    <SearchBarInput placeholder="Pequisar item"/>
-                    <View style={{position: "relative"}}>
-                        <SearchBarButton onPress={() => setOpenList(!openList)}>
+                    <SearchBarInput onChangeText={(e) => handleOrderSearchField(e)} placeholder="Pequisar item" value={searchOrder} onSubmitEditing={handleOrderSearch}/>
+                    <Menu>
+                        <MenuTrigger>
                             <Icon name="filter-list" size={35} color="#ff6200"/>
-                        </SearchBarButton>
-                        {openList && (
-                            <ListContainer>
-                                <ListContainerButton activeOpacity={1} underlayColor="#f1f1f1" onPress={() => {}}>
-                                    <ListLabelContainer>
-                                        <ListContainerLabel>Todos</ListContainerLabel>
-                                        <Icon name="check" size={20} color="#ff6200"/>
-                                    </ListLabelContainer>
-                                </ListContainerButton>
-                                <ListContainerButton activeOpacity={1} underlayColor="#f1f1f1" onPress={() => {}}>
-                                    <ListLabelContainer>
-                                        <ListContainerLabel>Pendentes</ListContainerLabel>
-                                        {/* <Icon name="check" size={20} color="#ff6200"/> */}
-                                    </ListLabelContainer>
-                                </ListContainerButton>
-                                <ListContainerButton activeOpacity={1} underlayColor="#f1f1f1" onPress={() => {}}>
-                                    <ListLabelContainer>
-                                        <ListContainerLabel>Entregues</ListContainerLabel>
-                                        {/* <Icon name="check" size={20} color="#ff6200"/> */}
-                                    </ListLabelContainer>
-                                </ListContainerButton>
-                                <ListContainerButton activeOpacity={1} underlayColor="#f1f1f1" onPress={() => {}}>
-                                    <ListLabelContainer>
-                                        <ListContainerLabel>Problemas</ListContainerLabel>
-                                        {/* <Icon name="check" size={20} color="#ff6200"/> */}
-                                    </ListLabelContainer>
-                                </ListContainerButton>
-                                <ListContainerButton activeOpacity={1} underlayColor="#f1f1f1" onPress={() => {}}>
-                                    <ListLabelContainer>
-                                        <ListContainerLabel>Cancelados</ListContainerLabel>
-                                        {/* <Icon name="check" size={20} color="#ff6200"/> */}
-                                    </ListLabelContainer>
-                                </ListContainerButton>
-                            </ListContainer>
-                        )}
-                    </View>
+                        </MenuTrigger>
+                        <MenuOptions optionsContainerStyle={{width: 150}}>
+                            <MenuOption onSelect={() => handleStatus("todos")}>
+                                <ListLabelContainer>
+                                    <ListContainerLabel>Todos</ListContainerLabel>
+                                    {queryParams.status === "todos" && <Icon name="check" size={20} color="#ff6200"/>}
+                                </ListLabelContainer>
+                            </MenuOption>
+                            <MenuOption onSelect={() => handleStatus("retirado")}>
+                                <ListLabelContainer>
+                                    <ListContainerLabel>Em trânsito</ListContainerLabel>
+                                    {queryParams.status === "retirado" && <Icon name="check" size={20} color="#ff6200"/>}
+                                </ListLabelContainer>
+                            </MenuOption>
+                            <MenuOption onSelect={() => handleStatus("pendente")}>
+                                <ListLabelContainer>
+                                    <ListContainerLabel>Pendentes</ListContainerLabel>
+                                    {queryParams.status === "pendente" && <Icon name="check" size={20} color="#ff6200"/>}
+                                </ListLabelContainer>
+                            </MenuOption>
+                            <MenuOption onSelect={() => handleStatus("entregue")}>
+                                <ListLabelContainer>
+                                    <ListContainerLabel>Entregues</ListContainerLabel>
+                                    {queryParams.status === "entregue" && <Icon name="check" size={20} color="#ff6200"/>}
+                                </ListLabelContainer>
+                            </MenuOption>
+                            <MenuOption onSelect={() => handleStatus("problema")}>
+                                <ListLabelContainer>
+                                    <ListContainerLabel>Problemas</ListContainerLabel>
+                                    {queryParams.status === "problema" && <Icon name="check" size={20} color="#ff6200"/>}
+                                </ListLabelContainer>
+                            </MenuOption>
+                            <MenuOption onSelect={() => handleStatus("cancelado")}>
+                                <ListLabelContainer>
+                                    <ListContainerLabel>Cancelados</ListContainerLabel>
+                                    {queryParams.status === "cancelado" && <Icon name="check" size={20} color="#ff6200"/>}
+                                </ListLabelContainer>
+                            </MenuOption>
+                        </MenuOptions>
+                    </Menu>
                 </SearchBarContainer>
             </ToolsBarContainer>
             {isLoading ? (
                 <View style={{flex:1, alignItems: "center", justifyContent: "center"}}>
                     <ActivityIndicator size="large" color="#ff6200"/>
+                </View>
+            ) : (
+            data.data.length === 0 ? (
+                <View style={{flex:1, alignItems: "center", justifyContent: "center"}}>
+                    <Icon name="search" size={100} color="#666"/>
+                    <Text style={{fontSize: 20, color: "#666"}}>Encomendas não encontradas.</Text>
                 </View>
             ) : (
                 <ListItemContainer>
@@ -85,7 +136,7 @@ export default function Deliveries(){
                                     <Icon name="arrow-circle-right" size={40} color="#FFF"/>
                                 </ItemContainerStatus>
                             )}
-                             {item.status === "entregue" && (
+                                {item.status === "entregue" && (
                                 <ItemContainerStatus backgroundColor="#87d6b7">
                                     <Icon name="check-circle" size={40} color="#FFF"/>
                                 </ItemContainerStatus>
@@ -106,8 +157,10 @@ export default function Deliveries(){
                                 <Text style={{fontSize: 15}}>{item.destinatario.cidade}</Text>
                             </ItemInfoContainer>
                         </ItemContainer>
+                        
                     ))}
                 </ListItemContainer>
+            )  
             )}
         </DeliveriesPage>
     );

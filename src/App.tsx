@@ -6,6 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import LoginStackNavigation from "./Routes/LoginStackNavigation";
 
+import {MenuProvider} from "react-native-popup-menu";
+
 import {AuthProvider} from "./contexts/auth";
 
 const queryClient = new QueryClient();
@@ -15,7 +17,9 @@ export default function App(){
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <AuthProvider>
-          <LoginStackNavigation/>
+          <MenuProvider>
+            <LoginStackNavigation/>
+          </MenuProvider>
         </AuthProvider>
       </NavigationContainer>
     </QueryClientProvider>
