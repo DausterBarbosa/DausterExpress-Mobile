@@ -22,9 +22,24 @@ export default function DeliveriesInfo(){
             case "entregue":
                 return "green";
             case "problema":
-                return "yellow";
+                return "#e7ba40";
             case "cancelado":
-                return "red"
+                return "#e74040";
+        }
+    }
+
+    function handleFooterToolBar(status:string){
+        switch(status){
+            case "pendente":
+                return false;
+            case "retirado":
+                return true;
+            case "entregue":
+                return false;
+            case "problema":
+                return true;
+            case "cancelado":
+                return false;
         }
     }
 
@@ -80,26 +95,28 @@ export default function DeliveriesInfo(){
                     </StatusContainerItemLabels>
                 </StatusContainerItem>
             </StatusContainer>
-            <ActionsContainer>
-                <DeliveriPageLabelContainer>
-                    <Icon name="settings" size={35} color="#333"/>
-                    <Text style={{fontSize: 20, fontWeight: "bold", color: "#333", marginLeft: 10}}>Ações</Text>
-                </DeliveriPageLabelContainer>
-                <ButtonsContainer>
-                    <ButtonContainer onPress={() => navigation.navigate("Informar problema")}>
-                        <Icon name="cancel" size={35} color="#e74040"/>
-                        <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>INFORMAR{`\n`}PROBLEMA</Text>
-                    </ButtonContainer>
-                    <ButtonContainer onPress={() => navigation.navigate("Lista de problemas")}>
-                        <Icon name="error" size={35} color="#e7ba40"/>
-                        <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>LISTAR{`\n`}PROBLEMAS</Text>
-                    </ButtonContainer>
-                    <ButtonContainer onPress={() => navigation.navigate("Tirar foto")}>
-                        <Icon name="check-circle" size={35} color="green"/>
-                        <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>REALIZAR{`\n`}ENTREGA</Text>
-                    </ButtonContainer>
-                </ButtonsContainer>
-            </ActionsContainer>
+            {handleFooterToolBar(route.params.status) && (
+                <ActionsContainer>
+                    <DeliveriPageLabelContainer>
+                        <Icon name="settings" size={35} color="#333"/>
+                        <Text style={{fontSize: 20, fontWeight: "bold", color: "#333", marginLeft: 10}}>Ações</Text>
+                    </DeliveriPageLabelContainer>
+                    <ButtonsContainer>
+                        <ButtonContainer onPress={() => navigation.navigate("Informar problema")}>
+                            <Icon name="cancel" size={35} color="#e74040"/>
+                            <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>INFORMAR{`\n`}PROBLEMA</Text>
+                        </ButtonContainer>
+                        <ButtonContainer onPress={() => navigation.navigate("Lista de problemas", route.params.problemas)}>
+                            <Icon name="error" size={35} color="#e7ba40"/>
+                            <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>LISTAR{`\n`}PROBLEMAS</Text>
+                        </ButtonContainer>
+                        <ButtonContainer onPress={() => navigation.navigate("Tirar foto")}>
+                            <Icon name="check-circle" size={35} color="green"/>
+                            <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>REALIZAR{`\n`}ENTREGA</Text>
+                        </ButtonContainer>
+                    </ButtonsContainer>
+                </ActionsContainer>
+            )}
         </DeliveriesInfoPage>
     );
 }
