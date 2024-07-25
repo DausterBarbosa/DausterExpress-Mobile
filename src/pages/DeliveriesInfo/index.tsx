@@ -102,7 +102,7 @@ export default function DeliveriesInfo(){
                         <Text style={{fontSize: 20, fontWeight: "bold", color: "#333", marginLeft: 10}}>Ações</Text>
                     </DeliveriPageLabelContainer>
                     <ButtonsContainer>
-                        <ButtonContainer onPress={() => navigation.navigate("Informar problema")}>
+                        <ButtonContainer onPress={() => navigation.navigate("Informar problema", {id: route.params.id})}>
                             <Icon name="cancel" size={35} color="#e74040"/>
                             <Text style={{textAlign: "center", marginTop: 5, fontWeight: "bold"}}>INFORMAR{`\n`}PROBLEMA</Text>
                         </ButtonContainer>

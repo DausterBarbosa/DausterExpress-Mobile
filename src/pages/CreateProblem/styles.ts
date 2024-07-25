@@ -21,6 +21,8 @@ export const ProblemButton = styled.TouchableOpacity`
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    width: 100%;
+    height: 55px;
 `;
 
 export const ProblemButtonLabel = styled.Text`

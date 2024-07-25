@@ -10,7 +10,7 @@ interface OrderQueryProps {
 
 export function useGetDeliveries(query:OrderQueryProps){
     return useQuery({
-        queryKey: ["getDeliveries", query],
+        queryKey: ["getDeliveries"],
         queryFn: async () => {
             const data = await Api.get("/deliveryman/order", {
                 params: {
