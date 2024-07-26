@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 
 import {Text, View, ActivityIndicator} from "react-native";
 
@@ -14,8 +14,12 @@ import {useGetDeliveries} from "../../controllers/DeliveriesController";
 
 import {Menu, MenuOptions, MenuOption, MenuTrigger} from "react-native-popup-menu";
 
+import DeliveryContext from "../../contexts/deliveries";
+
 export default function Deliveries(){
     const navigation = useNavigation();
+
+    const {handleSetDelivery} = useContext(DeliveryContext);
 
     const [queryParams, setQueryParams] = useState({
         page: 0,
@@ -26,6 +30,11 @@ export default function Deliveries(){
     const [searchOrder, setSearchOrder] = useState("");
 
     const {data, isLoading} = useGetDeliveries(queryParams);
+
+    function handleDeliveryDetails(item:any){
+        handleSetDelivery(item, queryParams);
+        navigation.navigate("Detalhes");
+    }
 
     function handleStatus(status:string){
         setSearchOrder("");
@@ -125,7 +134,7 @@ export default function Deliveries(){
             ) : (
                 <ListItemContainer>
                     {data.data.map((item:any) => (
-                        <ItemContainer key={item.id} onPress={() => navigation.navigate("Detalhes", item)}>
+                        <ItemContainer key={item.id} onPress={() => handleDeliveryDetails(item)}>
                             {item.status === "pendente" && (
                                 <ItemContainerStatus backgroundColor="#b491e4">
                                     <Icon name="pending" size={40} color="#FFF"/>

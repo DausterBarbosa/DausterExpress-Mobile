@@ -9,6 +9,7 @@ import LoginStackNavigation from "./Routes/LoginStackNavigation";
 import {MenuProvider} from "react-native-popup-menu";
 
 import {AuthProvider} from "./contexts/auth";
+import {DeliveriesProvider} from "./contexts/deliveries";
 
 const queryClient = new QueryClient();
 
@@ -17,9 +18,11 @@ export default function App(){
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <AuthProvider>
-          <MenuProvider>
-            <LoginStackNavigation/>
-          </MenuProvider>
+          <DeliveriesProvider>
+            <MenuProvider>
+              <LoginStackNavigation/>
+            </MenuProvider>
+          </DeliveriesProvider>
         </AuthProvider>
       </NavigationContainer>
     </QueryClientProvider>
