@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729437576825",
+    "project_id": "dausterexpress-90762",
+    "storage_bucket": "dausterexpress-90762.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729437576825:android:735904f4ec273c55ed7ea8",
+        "android_client_info": {
+          "package_name": "com.dausterexpressmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmm2wUwMLpL794S9aduIc02CHn-Z0qCmU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
