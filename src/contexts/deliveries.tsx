@@ -55,6 +55,7 @@ export const DeliveriesProvider:React.FC<HandleDeliveiesProps> = ({children}) =>
                         return {
                             ...item,
                             status: "entregue",
+                            data_entrega: new Date(),
                             problemas: [...item.problemas]
                         };
                     }
