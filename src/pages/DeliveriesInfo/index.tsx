@@ -2,7 +2,7 @@ import {useContext} from "react";
 
 import {Text} from "react-native";
 
-import {useNavigation, useRoute} from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 
 import FocusStatusBar from "../../components/FocusStatusBar";
 

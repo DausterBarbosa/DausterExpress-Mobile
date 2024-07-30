@@ -1,6 +1,8 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useContext} from "react";
 
-import {Linking, Image} from "react-native";
+import {useNavigation} from "@react-navigation/native";
+
+import {Linking, Image, Alert, ActivityIndicator} from "react-native";
 
 import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
 
@@ -8,10 +10,20 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import {ActionsButton, ActionsButtonContainer, PermissionFailedInfoButtonLabel, PermissionFailedInfoButton, PermissionFailedInfoLabel, PhotoDeliveryButton, PermissionFailedContainer, PermissionFailedInfoContainer} from "./styles";
 
+import {useSetDelivered} from "../../controllers/DeliveriesController";
+
 import FocusStatusBar from "../../components/FocusStatusBar";
 
+import DeliveryContext from "../../contexts/deliveries";
+
 export default function PhotoDelivery(){
+    const navigation = useNavigation();
+
+    const {delivery, handleUpdateDelivery} = useContext(DeliveryContext);
+
     const [photoTaken, setPhotoTaken] = useState<null | string>(null);
+
+    const {isPending, mutateAsync} = useSetDelivered();
 
     const camera = useRef<Camera>(null)
 
@@ -33,6 +45,26 @@ export default function PhotoDelivery(){
         setPhotoTaken(null);
     }
 
+    async function handleDelivered(){
+        try {
+            const data = await mutateAsync({
+                encomenda: delivery.id,
+                image_path: photoTaken || "",
+            });
+
+            handleUpdateDelivery("entregue");
+
+            Alert.alert("Atenção", "Operação realizada com sucesso.", [
+                {
+                    text: "OK",
+                    onPress: () => navigation.goBack(),
+                }
+            ]);
+        } catch (error) {
+            Alert.alert("Atenção", "Erro ao completar operação.");
+        }
+    }
+
     if (!hasPermission) return (
         <PermissionFailedContainer>
             <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
@@ -51,11 +83,11 @@ export default function PhotoDelivery(){
             <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <Image style={{flex: 1}} source={{uri: "file://" + photoTaken}}/>
             <ActionsButtonContainer>
-                <ActionsButton onPress={handleDiscartPhoto} backgroundColor="red" marginRight="80px">
+                <ActionsButton disabled={isPending} onPress={handleDiscartPhoto} backgroundColor="red" marginRight="80px">
                     <Icon name="close" size={35} color="#FFF"/>
                 </ActionsButton>
-                <ActionsButton backgroundColor="green">
-                    <Icon name="check" size={35} color="#FFF"/>
+                <ActionsButton disabled={isPending} backgroundColor="green" onPress={handleDelivered}>
+                    {isPending ? <ActivityIndicator size="large" color="#FFF"/> : <Icon name="check" size={35} color="#FFF"/>}
                 </ActionsButton>
             </ActionsButtonContainer>
          </>

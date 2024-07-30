@@ -8,7 +8,7 @@ interface HandleDeliveiesProps{
 
 interface HandleDeliveriesData{
     handleSetDelivery(delivery:any, queryParams:any):void;
-    handleUpdateDelivery(problem:any, status:string):void;
+    handleUpdateDelivery(status:string, problem?:any):void;
     delivery:any;
 }
 
@@ -16,6 +16,7 @@ interface DeliveryProps{
     id?: string;
     status: string;
     problemas: any[];
+    data_entrega: Date | null;
 }
 
 const DeliveriesContext = createContext<HandleDeliveriesData>({} as HandleDeliveriesData);
@@ -32,17 +33,31 @@ export const DeliveriesProvider:React.FC<HandleDeliveiesProps> = ({children}) =>
         setQueryParams(queryParams);
     }
 
-    function handleUpdateDelivery(problem:any, status:string){
-        setDelivery({...delivery, status, problemas: [...delivery!.problemas, problem]});
+    function handleUpdateDelivery(status:string, problem?:any){
+        if(status === "problema"){
+            setDelivery({...delivery, status, problemas: [...delivery!.problemas, problem], data_entrega: null});
+        }
+        else if(status === "entregue"){
+            setDelivery({...delivery, status, problemas: [...delivery!.problemas], data_entrega: new Date()});
+        }
 
         queryClient.setQueryData(["getDeliveries", queryParams], (oldData:any) => {
             const updatedData = oldData.data.map((item:any) => {
                 if(item.id === delivery!.id){
-                    return {
-                        ...item,
-                        status: "problema",
-                        problemas: [...item.problemas, problem]
-                    };
+                    if(status === "problema"){
+                        return {
+                            ...item,
+                            status: "problema",
+                            problemas: [...item.problemas, problem]
+                        };
+                    }
+                    else if(status === "entregue"){
+                        return {
+                            ...item,
+                            status: "entregue",
+                            problemas: [...item.problemas]
+                        };
+                    }
                 }
 
                 return item

@@ -24,7 +24,7 @@ export default function CreateProblem(){
                 description,
             });
 
-            handleUpdateDelivery(problemData.data.data, "problema");
+            handleUpdateDelivery("problema", problemData.data.data);
 
             setDescription("");
 
