@@ -62,7 +62,7 @@ export const ListItemContainer = styled.View`
 
 export const ItemContainer = styled.TouchableOpacity`
     background: #FFF;
-    elevation: 10;
+    elevation: 5;
     margin-top: 5px;
     flex-direction: row;
 `;

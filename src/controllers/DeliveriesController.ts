@@ -17,7 +17,7 @@ export function useGetDeliveries(query:OrderQueryProps){
             const data = await Api.get("/deliveryman/order", {
                 params: {
                     page: query.page + 1,
-                    take: 5,
+                    take: 10,
                     status: query.status,
                     encomenda: query.encomenda
                 }

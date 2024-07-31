@@ -1,6 +1,6 @@
 import {useState, useContext} from "react";
 
-import {Text, View, ActivityIndicator} from "react-native";
+import {Text, View, ActivityIndicator, FlatList} from "react-native";
 
 import {useNavigation} from "@react-navigation/native";
 
@@ -122,18 +122,16 @@ export default function Deliveries(){
                 </SearchBarContainer>
             </ToolsBarContainer>
             {isLoading ? (
-                <View style={{flex:1, alignItems: "center", justifyContent: "center"}}>
+                 <View style={{flex:1, alignItems: "center", justifyContent: "center"}}>
                     <ActivityIndicator size="large" color="#ff6200"/>
                 </View>
             ) : (
-            data.data.length === 0 ? (
-                <View style={{flex:1, alignItems: "center", justifyContent: "center"}}>
-                    <Icon name="search" size={100} color="#666"/>
-                    <Text style={{fontSize: 20, color: "#666"}}>Encomendas não encontradas.</Text>
-                </View>
-            ) : (
-                <ListItemContainer>
-                    {data.data.map((item:any) => (
+                data.data.length > 0 ? (
+                    <FlatList
+                    contentContainerStyle={{padding: 10, backgroundColor: "#FFF"}}
+                    data={data.data}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({item}) => (
                         <ItemContainer key={item.id} onPress={() => handleDeliveryDetails(item)}>
                             {item.status === "pendente" && (
                                 <ItemContainerStatus backgroundColor="#b491e4">
@@ -166,10 +164,14 @@ export default function Deliveries(){
                                 <Text style={{fontSize: 15}}>{item.destinatario.cidade}</Text>
                             </ItemInfoContainer>
                         </ItemContainer>
-                        
-                    ))}
-                </ListItemContainer>
-            )  
+                    )}
+                    />
+                ) : (
+                    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                        <Icon name="search" size={100} color="#666"/>
+                        <Text style={{fontSize: 20, color: "#666"}}>Encomendas não encontradas.</Text>
+                    </View>
+                )
             )}
         </DeliveriesPage>
     );

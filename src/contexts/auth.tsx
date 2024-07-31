@@ -17,6 +17,7 @@ interface User{
     estado: string;
     numero: string;
     telefone: string;
+    url_image_profile: string | null;
 }
 
 interface AuthContextData {

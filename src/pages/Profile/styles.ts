@@ -12,12 +12,23 @@ export const ProfilePhotoContainer = styled.View`
     margin-bottom: 20px;
 `;
 
-export const ProfilePhoto = styled.View`
+export const ProfilePhotoEmpty = styled.View`
     width: 150px;
     height: 150px;
-    background-color: black;
+    background-color: #EEE;
     border-radius: 100px;
     position: relative;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const ProfilePhoto = styled.ImageBackground`
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const ChangeProfilePhotoButton = styled.TouchableOpacity`
