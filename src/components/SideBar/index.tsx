@@ -45,6 +45,10 @@ export default function SideBar(){
                     <Icon name="settings" size={35} color={currentScreen === "Configurações" ? "#ff6200" : "#333"}/>
                     <ListContainerItemLabel color={currentScreen === "Configurações" ? "#ff6200" : "#333"}>Configurações</ListContainerItemLabel>
                 </ListContainerItem>
+                <ListContainerItem backgroundColor={currentScreen === "Suporte" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Chat de suporte")}>
+                    <Icon name="support-agent" size={35} color={currentScreen === "Suporte" ? "#ff6200" : "#333"}/>
+                    <ListContainerItemLabel color={currentScreen === "Suporte" ? "#ff6200" : "#333"}>Chat de suporte</ListContainerItemLabel>
+                </ListContainerItem>
             </ListContainer>
             <ExitContainer onPress={handleSignOut}>
                 <Icon name="exit-to-app" size={35} color="#f14927"/>
