@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 
-import {ActivityIndicator, Alert} from "react-native";
+import {ActivityIndicator, Alert, Linking} from "react-native";
 
 import {launchCamera} from "react-native-image-picker";
 
@@ -12,39 +12,55 @@ import {ChangeProfilePhotoButton, InfoContainerDescription, ProfilePage, Profile
 
 import {useSetProfilePhoto} from "../../controllers/ProfileController";
 
+import { useCameraPermission } from "react-native-vision-camera";
+
 import AuthContext from "../../contexts/auth";
 
 import uploadImage from "../../services/storage";
 
 export default function Profile(){
+    const { hasPermission } = useCameraPermission();
+
     const [loading, setLoading] = useState(false);
 
-    const {user} = useContext(AuthContext);
+    const {user, updateProfilePhoto} = useContext(AuthContext);
 
     const {mutateAsync} = useSetProfilePhoto();
 
     async function handleImage(){
-        const result = await launchCamera({
-            mediaType: "photo",
-            cameraType: "front",
-        });
-
-        if(result.assets){
-            const path = result.assets[0].originalPath;
-
-            setLoading(true);
-
-            try {
-                const url = await uploadImage(path!, "delivered/");
-
-                await mutateAsync(url);
-
-                Alert.alert("Atenção", "Operação realizada com sucesso.");
-            } catch (error) {
-                Alert.alert("Atenção", "Erro ao completar operação.");
+        if(!hasPermission){
+            Alert.alert("Atenção", "Para realizar essa ação é necessário autorizar o uso da câmera.", [
+                {
+                    text: "OK",
+                    onPress: () => Linking.openSettings(),
+                }
+            ]);
+        }
+        else{
+            const result = await launchCamera({
+                mediaType: "photo",
+                cameraType: "front",
+            });
+    
+            if(result.assets){
+                const path = result.assets[0].originalPath;
+    
+                setLoading(true);
+    
+                try {
+                    const url = await uploadImage(path!, "delivered/");
+    
+                    await updateProfilePhoto(url);
+    
+                    await mutateAsync(url);
+    
+                    Alert.alert("Atenção", "Operação realizada com sucesso.");
+                } catch (error) {
+                    Alert.alert("Atenção", "Erro ao completar operação.");
+                }
+    
+                setLoading(false);
             }
-
-            setLoading(false);
         }
     }
 

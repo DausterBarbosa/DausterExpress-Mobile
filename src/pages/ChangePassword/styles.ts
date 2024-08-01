@@ -13,15 +13,17 @@ export const PasswordTextField = styled.TextInput`
     margin-top: 10px;
 `;
 
-export const Button = styled.TouchableOpacity`
+export const PasswordButton = styled.TouchableOpacity`
     padding: 15px;
     background-color: #ff6200;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    width: 100%;
+    height: 55px;
 `;
 
-export const ButtonLabel = styled.Text`
+export const PasswordButtonLabel = styled.Text`
     font-weight: bold;
     color: #FFF;
     font-size: 17px;

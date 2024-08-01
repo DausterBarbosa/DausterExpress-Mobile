@@ -27,6 +27,7 @@ interface AuthContextData {
     isPending: boolean;
     signIn(email:string, password:string):Promise<void>;
     signOut(): void;
+    updateProfilePhoto(urlPhoto:string): void;
 }
 
 interface AuthProviderProps {
@@ -57,7 +58,7 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({ children }) => {
         }
     
         loadStorageData();
-    });
+    }, []);
 
     async function signIn(email:string, password:string){
         try {
@@ -79,8 +80,21 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null);
     }
 
+    async function updateProfilePhoto(urlPhoto:string){
+        setUser(prevState => {
+            const updatedUser = {
+                ...prevState!,
+                url_image_profile: urlPhoto,
+            };
+
+            AsyncStorage.setItem("@DausterExpressAuth:user", JSON.stringify(updatedUser));
+            
+            return updatedUser;
+        });
+    }
+
     return (
-        <AuthContext.Provider value={{signed: !!user, user, loading, isPending, signIn, signOut}}>
+        <AuthContext.Provider value={{signed: !!user, user, loading, isPending, signIn, signOut, updateProfilePhoto}}>
             {children}
         </AuthContext.Provider>
     );
