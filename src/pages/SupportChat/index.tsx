@@ -1,3 +1,5 @@
+import {useState, useContext, useEffect} from "react";
+
 import {FlatList} from "react-native";
 
 import FocusStatusBar from "../../components/FocusStatusBar";
@@ -6,75 +8,90 @@ import {BubbleMessage, SupportChatPage, MessagensContainer, TextFieldContainer, 
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+import firestore, {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
+
+import AuthContext from "../../contexts/auth";
+
+interface MessagesProps{
+    id: string;
+    content: string;
+    receiver_id: string;
+    receiver_name: string;
+    sender_id: string;
+    sender_name: string;
+    timestamp: FirebaseFirestoreTypes.Timestamp;
+}
+
 export default function SupportChat(){
+    const [messages, setMessages] = useState<MessagesProps[]>([]);
+
+    const [message, setMessage] = useState("");
+
+    const {user} = useContext(AuthContext);
+
+    function onResult(QuerySnapshot:FirebaseFirestoreTypes.QuerySnapshot){
+        const lastMessages: MessagesProps[] = [];
+
+        QuerySnapshot.forEach((doc) => {
+            lastMessages.push({
+                ...doc.data() as MessagesProps,
+                timestamp: doc.data().timestamp,
+                id: doc.id,
+            });
+        });
+
+        setMessages(lastMessages);
+    }
+
+    function onError(){
+
+    }
+
+    function sendMessage(){
+        firestore()
+        .collection('messages')
+        .add({
+            sender_id: user!.id,
+            sender_name: user!.nome + " " + user!.sobrenome,
+            receiver_id: null,
+            receiver_name: null,
+            content: message.trim(),
+            timestamp: firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+            console.log('User added!');
+        });
+
+        setMessage("");
+    }
+
+    useEffect(() => {
+        function handleRealTime(){
+            firestore().collection('messages').orderBy("timestamp", "desc").onSnapshot(onResult, onError);
+        }
+
+        handleRealTime();
+    }, []);
+    
     return (
         <SupportChatPage>
             <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
             <MessagensContainer>
                 <FlatList
-                    data={[
-                        {
-                            id: "1",
-                            adm: 123,
-                            entre: 321,
-                            message: "Sistemas militares foram encontraos sob  opoder do pkk oa sul da Turquia"
-                        },
-                        {
-                            id: "2",
-                            adm: 123,
-                            entre: 321,
-                            message: "Sistemas militares foram encontraos sob  opoder do pkk oa sul da Turquia"
-                        },
-                        {
-                            id: "3",
-                            adm: 123,
-                            entre: 321,
-                            message: "Sistemas militares foram encontraos sob  opoder do pkk oa sul da Turquia"
-                        },
-                        {
-                            id: "4",
-                            adm: 321,
-                            entre: 123,
-                            message: "Em carater de urgência a entrega deve ser feito."
-                        },
-                        {
-                            id: "5",
-                            adm: 321,
-                            entre: 123,
-                            message: "Em carater de urgência a entrega deve ser feito."
-                        },
-                        {
-                            id: "6",
-                            adm: 123,
-                            entre: 321,
-                            message: "Sistemas militares foram encontraos sob  opoder do pkk oa sul da Turquia"
-                        },
-                        {
-                            id: "7",
-                            adm: 321,
-                            entre: 123,
-                            message: "Em carater de urgência a entrega deve ser feito."
-                        },
-                        {
-                            id: "8",
-                            adm: 321,
-                            entre: 123,
-                            message: "Vamos nessa camaradas fazer as coisas mudarem Em carater de urgência a entrega deve ser feito."
-                        }
-                    ]}
                     inverted
+                    data={messages}
                     contentContainerStyle={{padding: 10}}
                     keyExtractor={(item) => item.id}
                     renderItem={({item}) => (
-                        <BubbleMessage key={item.id} backgroundColor={item.adm === 123 ? "#ff6200" : "#4d148c"} alignSelf={item.adm === 123 ? "flex-end" : "flex-start"}>
-                            {item.message}
+                        <BubbleMessage key={item.id} backgroundColor={item.sender_id === user!.id ? "#ff6200" : "#4d148c"} alignSelf={item.sender_id === user!.id ? "flex-end" : "flex-start"}>
+                            {item.content}
                         </BubbleMessage>
                     )}
                 />
             </MessagensContainer>
             <TextFieldContainer>
-                <TextField placeholder="Mensagem"/>
-                <SendButtom>
+                <TextField placeholder="Mensagem" value={message} onChangeText={(e) => setMessage(e)}/>
+                <SendButtom onPress={sendMessage} disabled={message.trim() === ""}>
                     <Icon name="send" size={30} color="#FFF"/>
                 </SendButtom>
             </TextFieldContainer>

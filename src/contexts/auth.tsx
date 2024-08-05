@@ -8,6 +8,7 @@ import {useGetAuthorization} from "../controllers/LoginController";
 import Api from "../services/api";
 
 interface User{
+    id: string;
     nome: string;
     sobrenome: string;
     cidade: string;
