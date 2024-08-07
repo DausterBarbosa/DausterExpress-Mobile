@@ -8,7 +8,7 @@ import {BubbleMessage, SupportChatPage, MessagensContainer, TextFieldContainer, 
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import firestore, {FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
+import firestore, {Filter, FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 
 import AuthContext from "../../contexts/auth";
 
@@ -67,7 +67,7 @@ export default function SupportChat(){
 
     useEffect(() => {
         function handleRealTime(){
-            firestore().collection('messages').orderBy("timestamp", "desc").onSnapshot(onResult, onError);
+            firestore().collection('messages').orderBy("timestamp", "desc").where(Filter.or(Filter("sender_id", "==" , user?.id), Filter("receiver_id", "==" , user?.id))).onSnapshot(onResult, onError);
         }
 
         handleRealTime();
