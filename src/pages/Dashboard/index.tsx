@@ -1,6 +1,8 @@
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 
-import {Text} from "react-native";
+import messaging from '@react-native-firebase/messaging';
+
+import {Alert, Linking, PermissionsAndroid, Text} from "react-native";
 
 import FocusStatusBar from "../../components/FocusStatusBar";
 
@@ -11,11 +13,52 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import AuthContext from "../../contexts/auth";
 
 import {useGetDashboardData} from "../../controllers/DashboardController";
+import {useSetFcmToken} from "../../controllers/FcmTokenController";
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Dashboard(){
     const {user} = useContext(AuthContext);
 
     const {data, isLoading} = useGetDashboardData();
+
+    const {mutateAsync} = useSetFcmToken();
+
+    useEffect(() => {
+        async function handleNotificationPermission(){
+            try {
+                const storedToken = await AsyncStorage.getItem("@DausterExpressFCMToken");
+
+                if(!storedToken){
+                    const authorizationStatus = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+                
+                    if(authorizationStatus === PermissionsAndroid.RESULTS.GRANTED){
+                        await messaging().registerDeviceForRemoteMessages();
+
+                        const token = await messaging().getToken();
+
+                        if(token){
+                            await AsyncStorage.setItem("@DausterExpressFCMToken", token);
+
+                            await mutateAsync(token);
+                        }
+                    }
+                    else {
+                        Alert.alert("Atenção", "É de extrema importância que as notificações estejam ativadas.", [
+                            {
+                                text: "OK",
+                                onPress: () => Linking.openSettings(),
+                            }
+                        ]);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }    
+        }
+
+        handleNotificationPermission();
+    }, []);
 
     return (
         <DashboardPage>
