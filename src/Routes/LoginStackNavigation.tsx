@@ -4,8 +4,8 @@ import {ActivityIndicator, View} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
 
 import Login from "../pages/Login";
-
 import DrawerNavigation from "./DrawerNavigation";
+import Notifications from "../pages/Notifications";
 
 import AuthContext from "../contexts/auth";
 
@@ -25,13 +25,23 @@ export default function LoginStackNavigation(){
     return (
         <Stack.Navigator>
             {signed ? (
-                <Stack.Screen
-                    name="DrawerNavigation"
-                    component={DrawerNavigation}
-                    options={{
-                        headerShown: false,
-                    }}
-                />
+                <>
+                    <Stack.Screen
+                        name="DrawerNavigation"
+                        component={DrawerNavigation}
+                        options={{
+                            headerShown: false,
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Notifications"
+                        component={Notifications}
+                        options={{
+                            title: "Notificações",
+                            headerTitleAlign: "center",
+                        }}
+                    />
+                </>
             ) : (
                 <Stack.Screen
                     name="Login"

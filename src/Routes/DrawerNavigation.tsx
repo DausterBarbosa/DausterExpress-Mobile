@@ -2,7 +2,7 @@ import {useEffect} from "react";
 
 import {createDrawerNavigator} from "@react-navigation/drawer";
 
-import { useQueryClient } from '@tanstack/react-query';
+import {getQueryClient} from "../singleton/queryClientSingleton";
 
 import HeaderBar from "../components/HeaderBar";
 import SideBar from "../components/SideBar";
@@ -22,7 +22,7 @@ import notifee from "@notifee/react-native";
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigation(){
-    const queryClient = useQueryClient();
+    const queryClient = getQueryClient();
 
     const navigation = useNavigation();
 
@@ -63,11 +63,6 @@ export default function DrawerNavigation(){
                 if(remoteMessage){
                     navigation.navigate(remoteMessage.data.screenName);
                 }
-            });
-
-            messaging().setBackgroundMessageHandler(async remoteMessage => {
-                queryClient.invalidateQueries({queryKey: ['getDeliveries']});
-                queryClient.invalidateQueries({queryKey: ['getDashboardData']});
             });
         
             messaging().getInitialNotification().then(remoteMessage => {

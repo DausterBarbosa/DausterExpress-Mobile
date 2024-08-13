@@ -23,7 +23,7 @@ const HeaderBar:React.FC<HeaderBarProps> = ({colorMenuIcon, colorNotificationIco
                 <Icon name="menu" size={35} color={colorMenuIcon}/>
             </TouchableOpacity>
             <Logo><LogoText color={colorFirstName}>Dauster</LogoText><LogoText color={colorSecondName}>Express</LogoText></Logo>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
                 <Icon name="notifications" size={35} color={colorNotificationIcon}/>
             </TouchableOpacity>
         </AppBarContainer>
