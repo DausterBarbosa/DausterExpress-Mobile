@@ -11,6 +11,7 @@ export const AppBarContainer = styled.View<{backgroundColor: string}>`
 export const Logo = styled.Text`
     font-size: 25px;
     font-weight: 900;
+    margin-right: 15px;
 `;
 
 export const LogoText = styled.Text<{color: string}>`

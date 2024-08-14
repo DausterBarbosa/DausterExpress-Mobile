@@ -54,3 +54,13 @@ export const ExitContainerLabel = styled.Text`
     font-weight: bold;
     color: #333;
 `;
+
+export const ProfilePhotoEmpty = styled.View`
+    width: 130px;
+    height: 130px;
+    background-color: #EEE;
+    border-radius: 100px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+`;

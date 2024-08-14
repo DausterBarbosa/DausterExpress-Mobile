@@ -1,4 +1,4 @@
-import {TouchableOpacity} from "react-native";
+import {TouchableOpacity, View} from "react-native";
 
 import {AppBarContainer, Logo, LogoText} from "./styles";
 
@@ -23,9 +23,7 @@ const HeaderBar:React.FC<HeaderBarProps> = ({colorMenuIcon, colorNotificationIco
                 <Icon name="menu" size={35} color={colorMenuIcon}/>
             </TouchableOpacity>
             <Logo><LogoText color={colorFirstName}>Dauster</LogoText><LogoText color={colorSecondName}>Express</LogoText></Logo>
-            <TouchableOpacity onPress={() => navigation.navigate("Notifications")}>
-                <Icon name="notifications" size={35} color={colorNotificationIcon}/>
-            </TouchableOpacity>
+            <View/>
         </AppBarContainer>
     );
 }

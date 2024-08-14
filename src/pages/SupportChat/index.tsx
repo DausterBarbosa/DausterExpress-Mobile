@@ -1,16 +1,18 @@
 import {useState, useContext, useEffect} from "react";
 
-import {FlatList} from "react-native";
+import {FlatList, Image} from "react-native";
 
 import FocusStatusBar from "../../components/FocusStatusBar";
 
-import {BubbleMessage, SupportChatPage, MessagensContainer, TextFieldContainer, TextField, SendButtom} from "./styles";
+import {BubbleMessage, EmptyChatPanel, SupportChatPage, MessagensContainer, TextFieldContainer, TextField, SendButtom} from "./styles";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import firestore, {Filter, FirebaseFirestoreTypes} from "@react-native-firebase/firestore";
 
 import AuthContext from "../../contexts/auth";
+
+import SupportImage from "../../assets/images/support.png";
 
 interface MessagesProps{
     id: string;
@@ -76,19 +78,25 @@ export default function SupportChat(){
     return (
         <SupportChatPage>
             <FocusStatusBar barStyle="dark-content" backgroundColor="#FFF"/>
-            <MessagensContainer>
-                <FlatList
-                    inverted
-                    data={messages}
-                    contentContainerStyle={{padding: 10}}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({item}) => (
-                        <BubbleMessage key={item.id} backgroundColor={item.sender_id === user!.id ? "#ff6200" : "#4d148c"} alignSelf={item.sender_id === user!.id ? "flex-end" : "flex-start"}>
-                            {item.content}
-                        </BubbleMessage>
-                    )}
-                />
-            </MessagensContainer>
+            {messages.length === 0 ? (
+                <EmptyChatPanel>
+                    <Image source={SupportImage} style={{ width: 400, height: 400 }}/>
+                </EmptyChatPanel>
+            ) : (
+                <MessagensContainer>
+                    <FlatList
+                        inverted
+                        data={messages}
+                        contentContainerStyle={{padding: 10}}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({item}) => (
+                            <BubbleMessage key={item.id} backgroundColor={item.sender_id === user!.id ? "#ff6200" : "#4d148c"} alignSelf={item.sender_id === user!.id ? "flex-end" : "flex-start"}>
+                                {item.content}
+                            </BubbleMessage>
+                        )}
+                    />
+                </MessagensContainer>
+            )}
             <TextFieldContainer>
                 <TextField placeholder="Mensagem" value={message} onChangeText={(e) => setMessage(e)}/>
                 <SendButtom onPress={sendMessage} disabled={message.trim() === ""}>

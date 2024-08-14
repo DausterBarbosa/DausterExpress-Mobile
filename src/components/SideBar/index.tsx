@@ -1,17 +1,17 @@
 import {useState, useContext} from "react";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation, useRoute, getFocusedRouteNameFromRoute} from "@react-navigation/native";
 
-import {ExitContainerLabel, ExitContainer, ListContainerItemLabel, ListContainerItem, SideBarContainer, PerfilContainer, PerfilImage, PerfilName, ListContainer} from "./styles";
+import {ProfilePhotoEmpty, ExitContainerLabel, ExitContainer, ListContainerItemLabel, ListContainerItem, SideBarContainer, PerfilContainer, PerfilImage, PerfilName, ListContainer} from "./styles";
 
 import AuthContext from "../../contexts/auth";
 
 export default function SideBar(){
-    const {signOut} = useContext(AuthContext);
+    const route = useRoute();
+
+    const {signOut, user} = useContext(AuthContext);
 
     const [currentScreen, setCurrentScreen] = useState("Início");
 
@@ -22,6 +22,10 @@ export default function SideBar(){
         setCurrentScreen(screen);
     }
 
+    function getCurrentPage(){
+        return getFocusedRouteNameFromRoute(route);
+    }
+
     async function handleSignOut(){
         signOut();
     }
@@ -29,25 +33,31 @@ export default function SideBar(){
     return (
         <SideBarContainer>
             <PerfilContainer>
-                <PerfilImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6oUwCkp9pTS763OIt605sXE7J32yx764HqQ&s"/>
-                <PerfilName>Adolf Hitler</PerfilName>
+                {user?.url_image_profile === null ? (
+                    <ProfilePhotoEmpty>
+                        <Icon name="person" size={70} color="#333"/>
+                    </ProfilePhotoEmpty>
+                ) : (
+                    <PerfilImage src={user?.url_image_profile}/>
+                )}
+                <PerfilName>{user?.nome + " " + user?.sobrenome}</PerfilName>
             </PerfilContainer>
             <ListContainer>
-                <ListContainerItem backgroundColor={currentScreen === "Início" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Início")}>
-                    <Icon name="edit-note" size={35} color={currentScreen === "Início" ? "#ff6200" : "#333"}/>
-                    <ListContainerItemLabel color={currentScreen === "Início" ? "#ff6200" : "#333"}>Início</ListContainerItemLabel>
+                <ListContainerItem backgroundColor={getCurrentPage() === "Início" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Início")}>
+                    <Icon name="edit-note" size={35} color={getCurrentPage() === "Início" ? "#ff6200" : "#333"}/>
+                    <ListContainerItemLabel color={getCurrentPage() === "Início" ? "#ff6200" : "#333"}>Início</ListContainerItemLabel>
                 </ListContainerItem>
-                <ListContainerItem backgroundColor={currentScreen === "Entregas" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Entregas")}>
-                    <Icon name="local-shipping" size={35} color={currentScreen === "Entregas" ? "#ff6200" : "#333"}/>
-                    <ListContainerItemLabel color={currentScreen === "Entregas" ? "#ff6200" : "#333"}>Entregas</ListContainerItemLabel>
+                <ListContainerItem backgroundColor={getCurrentPage() === "Entregas" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Entregas")}>
+                    <Icon name="local-shipping" size={35} color={getCurrentPage() === "Entregas" ? "#ff6200" : "#333"}/>
+                    <ListContainerItemLabel color={getCurrentPage() === "Entregas" ? "#ff6200" : "#333"}>Entregas</ListContainerItemLabel>
                 </ListContainerItem>
-                <ListContainerItem backgroundColor={currentScreen === "Configurações" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Configurações")}>
-                    <Icon name="settings" size={35} color={currentScreen === "Configurações" ? "#ff6200" : "#333"}/>
-                    <ListContainerItemLabel color={currentScreen === "Configurações" ? "#ff6200" : "#333"}>Configurações</ListContainerItemLabel>
+                <ListContainerItem backgroundColor={getCurrentPage() === "Configurações" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Configurações")}>
+                    <Icon name="settings" size={35} color={getCurrentPage() === "Configurações" ? "#ff6200" : "#333"}/>
+                    <ListContainerItemLabel color={getCurrentPage() === "Configurações" ? "#ff6200" : "#333"}>Configurações</ListContainerItemLabel>
                 </ListContainerItem>
-                <ListContainerItem backgroundColor={currentScreen === "Suporte" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Chat de suporte")}>
-                    <Icon name="support-agent" size={35} color={currentScreen === "Suporte" ? "#ff6200" : "#333"}/>
-                    <ListContainerItemLabel color={currentScreen === "Suporte" ? "#ff6200" : "#333"}>Chat de suporte</ListContainerItemLabel>
+                <ListContainerItem backgroundColor={getCurrentPage() === "Chat de suporte" ? "#EEE" : "#FFF"} onPress={() => handleSideBarNavigation("Chat de suporte")}>
+                    <Icon name="support-agent" size={35} color={getCurrentPage() === "Chat de suporte" ? "#ff6200" : "#333"}/>
+                    <ListContainerItemLabel color={getCurrentPage() === "Chat de suporte" ? "#ff6200" : "#333"}>Chat de suporte</ListContainerItemLabel>
                 </ListContainerItem>
             </ListContainer>
             <ExitContainer onPress={handleSignOut}>

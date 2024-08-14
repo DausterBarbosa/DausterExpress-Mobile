@@ -4,6 +4,8 @@ import {useNavigation} from "@react-navigation/native";
 
 import {Linking, Image, Alert, ActivityIndicator} from "react-native";
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import { Camera, useCameraDevice, useCameraPermission } from "react-native-vision-camera";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -17,6 +19,8 @@ import FocusStatusBar from "../../components/FocusStatusBar";
 import DeliveryContext from "../../contexts/deliveries";
 
 export default function PhotoDelivery(){
+    const queryClient = useQueryClient();
+
     const navigation = useNavigation();
 
     const {delivery, handleUpdateDelivery} = useContext(DeliveryContext);
@@ -53,6 +57,8 @@ export default function PhotoDelivery(){
             });
 
             handleUpdateDelivery("entregue");
+
+            queryClient.invalidateQueries({queryKey: ['getDashboardData']});
 
             Alert.alert("Atenção", "Operação realizada com sucesso.", [
                 {

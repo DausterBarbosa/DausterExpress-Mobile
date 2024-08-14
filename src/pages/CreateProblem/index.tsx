@@ -2,6 +2,8 @@ import {useState, useContext} from "react";
 
 import { ActivityIndicator, Alert } from "react-native";
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import FocusStatusBar from "../../components/FocusStatusBar";
 
 import {useCreateProblem} from "../../controllers/ProblemController";
@@ -11,6 +13,8 @@ import {ProblemButton, ProblemButtonLabel, CreateProblemsPage, TextProblemField}
 import DeliveryContext from "../../contexts/deliveries";
 
 export default function CreateProblem(){
+    const queryClient = useQueryClient();
+    
     const {isPending, mutateAsync} = useCreateProblem();
 
     const [description, setDescription] = useState("");
@@ -27,6 +31,8 @@ export default function CreateProblem(){
             handleUpdateDelivery("problema", problemData.data.data);
 
             setDescription("");
+
+            queryClient.invalidateQueries({queryKey: ['getDashboardData']});
 
             Alert.alert("Atenção", "Problema cadastrado com sucesso.");
         } catch (error) {

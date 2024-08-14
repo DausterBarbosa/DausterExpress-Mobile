@@ -34,6 +34,12 @@ export const SendButtom = styled.TouchableOpacity`
     elevation: 3;
 `;
 
+export const EmptyChatPanel = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`;
+
 export const BubbleMessage = styled.Text<{
     backgroundColor:string;
     alignSelf:string;
