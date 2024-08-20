@@ -84,17 +84,19 @@ export default function SupportChat(){
                 </EmptyChatPanel>
             ) : (
                 <MessagensContainer>
-                    <FlatList
-                        inverted
-                        data={messages}
-                        contentContainerStyle={{padding: 10}}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({item}) => (
-                            <BubbleMessage key={item.id} backgroundColor={item.sender_id === user!.id ? "#ff6200" : "#4d148c"} alignSelf={item.sender_id === user!.id ? "flex-end" : "flex-start"}>
-                                {item.content}
-                            </BubbleMessage>
-                        )}
-                    />
+                    {user !== null && (
+                        <FlatList
+                            inverted
+                            data={messages}
+                            contentContainerStyle={{padding: 10}}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({item}) => (
+                                <BubbleMessage key={item.id} backgroundColor={item.sender_id === user!.id ? "#ff6200" : "#4d148c"} alignSelf={item.sender_id === user!.id ? "flex-end" : "flex-start"}>
+                                    {item.content}
+                                </BubbleMessage>
+                            )}
+                        />
+                    )}
                 </MessagensContainer>
             )}
             <TextFieldContainer>

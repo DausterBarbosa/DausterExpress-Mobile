@@ -33,7 +33,7 @@ export default function SideBar(){
     return (
         <SideBarContainer>
             <PerfilContainer>
-                {user?.url_image_profile === null ? (
+                {user === null || user?.url_image_profile === null ? (
                     <ProfilePhotoEmpty>
                         <Icon name="person" size={70} color="#333"/>
                     </ProfilePhotoEmpty>
